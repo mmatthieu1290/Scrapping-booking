@@ -1,121 +1,91 @@
-# Bloc_1
+# French Travel Destination Recommender
 
-<div id="top">
-
-<!-- HEADER STYLE: CLASSIC -->
-<div align="center">
-
-
-# PROJECT1-CERTIFICATION-SCRAPPING-BOOKING
-
-<em>Unlock Insights, Transform Travel Planning Instantly</em>
-
-<!-- BADGES -->
-<img src="https://img.shields.io/github/last-commit/mmatthieu1290/Project1-Certification-Scrapping-booking?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
-<img src="https://img.shields.io/github/languages/top/mmatthieu1290/Project1-Certification-Scrapping-booking?style=flat&color=0080ff" alt="repo-top-language">
-<img src="https://img.shields.io/github/languages/count/mmatthieu1290/Project1-Certification-Scrapping-booking?style=flat&color=0080ff" alt="repo-language-count">
-
-<em>Built with the tools and technologies:</em>
-
-<img src="https://img.shields.io/badge/Markdown-000000.svg?style=flat&logo=Markdown&logoColor=white" alt="Markdown">
-
-</div>
-<br>
+End-to-end data pipeline that scrapes hotel data from Booking.com, enriches it with geolocation and weather forecasts, and recommends the best French destinations based on hotel ratings and upcoming temperatures.
 
 ---
 
-## Table of Contents
+## What it does
 
-- [Overview](#overview)
-- [Data Files](#Data-Files)
-- [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Testing](#testing)
-
----
-
-## Overview
-
-Project1-Certification-Scrapping-booking is a versatile developer tool focused on automating web data collection and analysis for travel insights. It serves as the foundational engine for extracting, processing, and visualizing data from online sources, enabling informed decision-making.
-
-E-mail: mathieu1290@gmail.com
-
-Video link: https://share.vidyard.com/watch/iroLsKvEMwhTHkH3X4Mzxv?
-
-**Why Project1-Certification-Scrapping-booking?**
-
-This project simplifies the complex process of web scraping and data integration, empowering developers to build data-driven travel applications. The core features include:
-
-- **🧩** **Web Scraping:** Automate data extraction from online sources to gather hotel options and weather forecasts.
-- **🌟** **Data Integration:** Seamlessly combine data from CSV files and databases for comprehensive analysis.
-- **🔍** **Data Processing & Analysis:** Transform raw data into actionable insights with built-in processing tools.
-- **🎯** **Visualization Support:** Generate visual representations to compare hotel rates and climate conditions.
-- **🚀** **Foundation for Travel Tools:** Accelerate development of travel planning and decision-support applications.
+1. Scrapes hotel names, ratings, links, and descriptions for 35 French cities from Booking.com (Scrapy)
+2. Retrieves each hotel's address by crawling its individual Booking.com page (BeautifulSoup)
+3. Geocodes hotel addresses to latitude/longitude via the Nominatim API (OpenStreetMap)
+4. Fetches 7-day maximum temperature forecasts for each city via the OpenWeatherMap API
+5. Stores the enriched dataset in an AWS S3 data lake and exports it to a SQLite database
+6. Visualizes results on interactive maps: hotel ratings by city, temperature forecasts, and top-rated hotels
 
 ---
 
-## Data Files
+## Output
 
-- **hotels.csv**  
-  Contains 864 hotels across 35 cities. Each record includes:  
-  - Hotel rate  
-  - Latitude and longitude  
-  - Address  
-  - Average maximum temperature of the city (next 7 days)  
-
-- **cities_hotels_meteo.csv**  
-  Contains data for the 35 cities. Each record includes:  
-  - Average hotel rates on Booking  
-  - Latitude and longitude  
-  - Average maximum temperature (next 7 days)  
-
-- **Matthieu.db**  
-  SQLite database containing the same information as `hotels.csv`.  
-
-## Getting Started
-
-### Prerequisites
-
-This project requires the following dependencies:
-
-- **Programming Language:** JupyterNotebook
-
-### Installation
-
-Build Project1-Certification-Scrapping-booking from the source and install dependencies:
-
-1. **Clone the repository:**
-
-    ```sh
-    ❯ git clone https://github.com/mmatthieu1290/Project1-Certification-Scrapping-booking
-    ```
-
-2. **Navigate to the project directory:**
-
-    ```sh
-    ❯ cd Project1-Certification-Scrapping-booking
-    ```
-
-3. **Install the dependencies:**
-
-echo 'INSERT-INSTALL-COMMAND-HERE'
-
-### Usage
-
-Run the project with:
-
-echo 'INSERT-RUN-COMMAND-HERE'
-
-### Testing
-
-Project1-certification-scrapping-booking uses the {__test_framework__} test framework. Run the test suite with:
-
-echo 'INSERT-TEST-COMMAND-HERE'
+- **Top 5 warmest cities** for the next 7 days among the 35 destinations
+- **Top 20 hotels** by rating across all cities
+- Interactive Plotly geospatial maps overlaying hotel ratings and temperature forecasts
 
 ---
 
-<div align="left"><a href="#top">⬆ Return</a></div>
+## Pipeline
+
+```
+Booking.com (Scrapy)
+    └── Hotel names, ratings, links, descriptions
+          └── BeautifulSoup (per-hotel page)
+                └── Hotel addresses
+                      └── Nominatim API
+                            └── Latitude / Longitude
+                                  └── OpenWeatherMap API
+                                        └── 7-day temperature forecast
+                                              ├── AWS S3 (data lake)
+                                              └── SQLite (local database)
+```
 
 ---
+
+## Tech Stack
+
+| Package | Role |
+|---|---|
+| `scrapy` | Hotel scraping from Booking.com |
+| `beautifulsoup4` | Per-hotel address extraction |
+| `requests` | Nominatim and OpenWeatherMap API calls |
+| `boto3` | AWS S3 data lake storage |
+| `sqlite3` | Local SQL database export |
+| `pandas` | Data cleaning and aggregation |
+| `plotly` | Interactive geospatial maps |
+
+---
+
+## Cities covered
+
+35 destinations across France, including Paris, Lyon, Marseille, Strasbourg, Annecy, Biarritz, Mont Saint-Michel, Carcassonne, and more.
+
+---
+
+## Files
+
+| File | Description |
+|---|---|
+| `Version_finale_projet1_Matthieu_Marechal.ipynb` | Full pipeline notebook |
+| `scrap_booking.json` | Raw scraping output |
+| `hotels.csv` | Enriched hotel dataset (geocoded + weather) |
+| `cities_hotels_meteo.csv` | City-level aggregated data |
+| `Matthieu.db` | SQLite database |
+
+---
+
+## Installation
+
+```bash
+git clone https://github.com/mmatthieu1290/Project1
+cd Project1
+pip install scrapy beautifulsoup4 requests boto3 pandas plotly lxml
+```
+
+**API keys required:**
+- [OpenWeatherMap](https://openweathermap.org/api) — set your key in the notebook before running
+- AWS credentials — configure via `aws configure` or environment variables (do not hardcode in the notebook)
+
+---
+
+## ⚠️ Security note
+
+Do not commit API keys or AWS credentials to the repository. Use environment variables or a `.env` file and add it to `.gitignore`.
