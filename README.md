@@ -82,10 +82,4 @@ pip install scrapy beautifulsoup4 requests boto3 pandas plotly lxml
 
 **API keys required:**
 - [OpenWeatherMap](https://openweathermap.org/api) — set your key in the notebook before running
-- AWS credentials — configure via `aws configure` or environment variables (do not hardcode in the notebook)
-
----
-
-## ⚠️ Security note
-
-Do not commit API keys or AWS credentials to the repository. Use environment variables or a `.env` file and add it to `.gitignore`.
+- AWS credentials — configure via `aws configure` or environment variables
